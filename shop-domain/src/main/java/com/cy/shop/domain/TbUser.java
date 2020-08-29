@@ -1,9 +1,10 @@
 package com.cy.shop.domain;
 
+import com.cy.shop.commons.persistence.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * The type Tb user.
@@ -12,12 +13,12 @@ import java.util.Date;
  * @since 2020 -07-04 11:39
  */
 @Data
-public class TbUser implements Serializable {
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class TbUser extends BaseEntity {
     private String username;
+    @JsonIgnore
     private String password;
     private String phone;
     private String email;
-    private Date created;
-    private Date update;
+
 }

@@ -7,5 +7,6 @@ package com.cy.shop.commons.constant;
  */
 public class ConstantUtils {
     public static final String SESSION_USER = "user";
-    public static final String REQUEST_SUFFIX_LOGIN = "login";
+    public static final int STATUS_SUCCESS = 200;
+    public static final int STATUS_FAIL = 500;
 }

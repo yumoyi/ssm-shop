@@ -10,18 +10,103 @@
         a.created,
         a.updated
     </sql>
+
     <select id="selectAll" resultType="TbUser">
         SELECT
-        <include refid="tbUserColumns" />
+        <include refid="tbUserColumns"/>
         FROM
-            tb_user AS a
+        tb_user AS a
+        ORDER BY a.updated DESC
     </select>
+
+    <select id="getById" resultType="TbUser" parameterType="java.lang.Long">
+        SELECT
+        <include refid="tbUserColumns"/>
+        FROM tb_user AS a
+        WHERE a.id = #{id}
+    </select>
+
     <select id="getByEmail" resultType="TbUser" parameterType="string">
         SELECT
-        <include refid="tbUserColumns" />
+        <include refid="tbUserColumns"/>
         FROM
         tb_user AS a
         WHERE
         a.email = #{email}
     </select>
+
+    <select id="page" resultType="TbUser" parameterType="java.util.Map">
+        SELECT
+        <include refid="tbUserColumns"/>
+        FROM
+        tb_user AS a
+        <where>
+            <if test="pageParams.username != null and pageParams.username != ''">
+                AND a.username LIKE CONCAT ('%', #{pageParams.username}, '%')
+            </if>
+            <if test="pageParams.phone != null and pageParams.phone != ''">
+                AND a.phone LIKE CONCAT ('%', #{pageParams.phone}, '%')
+            </if>
+            <if test="pageParams.email != null and pageParams.email != ''">
+                AND a.email LIKE CONCAT ('%', #{pageParams.email}, '%')
+            </if>
+        </where>
+        ORDER BY a.updated DESC
+        LIMIT #{start},#{length}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(*) FROM tb_user AS a
+        <where>
+            <if test="username != null and username != ''">
+                AND a.username LIKE CONCAT ('%', #{username}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                AND a.phone LIKE CONCAT ('%', #{phone}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND a.email LIKE CONCAT ('%', #{email}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_user (username,
+                             password,
+                             phone,
+                             email,
+                             created,
+                             updated)
+        VALUES (#{username},
+                #{password},
+                #{phone},
+                #{email},
+                #{created},
+                #{updated})
+    </insert>
+
+    <delete id="delete">
+        DELETE
+        FROM tb_user
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteMulti">
+        DELETE FROM tb_user
+        WHERE id IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        UPDATE
+            tb_user
+        SET username = #{username},
+            password = #{password},
+            phone    = #{phone},
+            email    = #{email},
+            updated  = #{updated}
+        WHERE id = #{id}
+    </update>
 </mapper>

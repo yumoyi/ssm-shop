@@ -1,16 +1,40 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: cy
-  Date: 2020/7/4
-  Time: 12:09
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
-    <title>Title</title>
+    <title>我的商城 | 控制面板</title>
+
+    <jsp:include page="../includes/header.jsp"/>
 </head>
-<body>
-123
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <%--导航--%>
+    <jsp:include page="../includes/nav.jsp"/>
+    <%--菜单栏--%>
+    <jsp:include page="../includes/menu.jsp"/>
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                控制面板
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li class="active">控制面板</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+        </section>
+    </div>
+    <%--版权--%>
+    <jsp:include page="../includes/copyright.jsp"/>
+</div>
+
+<jsp:include page="../includes/footer.jsp"/>
 </body>
 </html>
