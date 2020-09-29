@@ -1,6 +1,9 @@
 package com.cy.shop.web.admin.dao;
 
+import com.cy.shop.domain.TbContentCategory;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author cy
@@ -8,5 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TbContentCategoryDao {
-
+    List<TbContentCategory> selectAll ();
 }

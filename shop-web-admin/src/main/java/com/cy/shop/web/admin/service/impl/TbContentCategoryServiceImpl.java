@@ -1,9 +1,12 @@
 package com.cy.shop.web.admin.service.impl;
 
+import com.cy.shop.domain.TbContentCategory;
 import com.cy.shop.web.admin.dao.TbContentCategoryDao;
-import com.cy.shop.web.admin.service.TbContentCategoryServie;
+import com.cy.shop.web.admin.service.TbContentCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author cy
@@ -11,9 +14,14 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class TbContentCategoryServiceImpl implements TbContentCategoryServie {
+public class TbContentCategoryServiceImpl implements TbContentCategoryService {
 
     @Autowired
     private TbContentCategoryDao tbContentCategoryDao;
 
+
+    @Override
+    public List<TbContentCategory> selectAll() {
+        return tbContentCategoryDao.selectAll();
+    }
 }

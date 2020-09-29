@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>我的商城 | 内容管理</title>
-
+    <link rel="stylesheet" href="/static/assets/plugins/treeTable/themes/vsStyle/treeTable.css">
     <jsp:include page="../includes/header.jsp"/>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -54,10 +54,22 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body table-responsive">
-                            <table id="dataTable" class="table table-hover">
+                            <table id="treeTable" class="table table-hover">
                                 <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>名称</th>
+                                        <th>排序</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
+                                    <c:forEach items="${tbContentCategories}" var="contentCategory">
+                                        <tr id="${contentCategory.id}" pId="${contentCategory.parentId}">
+                                            <td>${contentCategory.id}</td>
+                                            <td>${contentCategory.name}</td>
+                                            <td>${contentCategory.sortOrder}</td>
+                                        </tr>
+                                    </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -76,9 +88,18 @@
 
 <jsp:include page="../includes/footer.jsp"/>
 
+<script src="/static/assets/plugins/treeTable/jquery.treeTable.min.js"></script>
+
 <!-- 自定义模态框 -->
 <sys:modal />
 
-
+<script>
+    $(function () {
+        $("#treeTable").treeTable({
+            expandLevel: 2,
+            column: 1
+        });
+    });
+</script>
 </body>
 </html>
