@@ -12,30 +12,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * 基本服务层方法实现
  * @author cy
  * @since 2020-08-28 11:28
  */
-public class AbstractBaseServiceImpl<T extends BaseEntity,D extends BaseDao<T>> implements BaseService<T> {
+public abstract class AbstractBaseServiceImpl<T extends BaseEntity, D extends BaseDao<T>> implements BaseService<T> {
 
     @Autowired
-    private D dao;
+    protected D dao;
 
     /**
-     * 查询全部
+     * 查询全部数据
      *
-     * @return 查询到的全部数据
+     * @return
      */
     @Override
     public List<T> selectAll() {
         return dao.selectAll();
     }
 
-
     /**
      * 删除用户信息
      *
-     * @param id 用户ID
+     * @param id
      */
     @Override
     public void delete(Long id) {
@@ -45,8 +44,8 @@ public class AbstractBaseServiceImpl<T extends BaseEntity,D extends BaseDao<T>> 
     /**
      * 根据 ID 获取信息
      *
-     * @param id 用户ID
-     * @return 用户信息
+     * @param id
+     * @return
      */
     @Override
     public T getById(Long id) {
@@ -56,7 +55,7 @@ public class AbstractBaseServiceImpl<T extends BaseEntity,D extends BaseDao<T>> 
     /**
      * 更新信息
      *
-     * @param entity 需要更新的用户信息
+     * @param entity
      */
     @Override
     public void update(T entity) {
@@ -66,7 +65,7 @@ public class AbstractBaseServiceImpl<T extends BaseEntity,D extends BaseDao<T>> 
     /**
      * 批量删除
      *
-     * @param ids 用户
+     * @param ids
      */
     @Override
     public void deleteMulti(String[] ids) {
@@ -74,13 +73,23 @@ public class AbstractBaseServiceImpl<T extends BaseEntity,D extends BaseDao<T>> 
     }
 
     /**
+     * 查询总笔数
+     *
+     * @return
+     */
+    @Override
+    public int count(T entity) {
+        return dao.count(entity);
+    }
+
+    /**
      * 分页查询
      *
-     * @param start  查询起始值
-     * @param length 查询长度
+     * @param start
+     * @param length
      * @param draw
-     * @param entity 实体类
-     * @return 分页数据
+     * @param entity
+     * @return
      */
     @Override
     public PageInfo<T> page(int start, int length, int draw, T entity) {
@@ -96,17 +105,7 @@ public class AbstractBaseServiceImpl<T extends BaseEntity,D extends BaseDao<T>> 
         pageInfo.setRecordsTotal(count);
         pageInfo.setRecordsFiltered(count);
         pageInfo.setData(dao.page(params));
-        return pageInfo;
-    }
 
-    /**
-     * 查询总记录数
-     *
-     * @param entity 查询的实体类
-     * @return 总记录数
-     */
-    @Override
-    public int count(T entity) {
-        return dao.count(entity);
+        return pageInfo;
     }
 }

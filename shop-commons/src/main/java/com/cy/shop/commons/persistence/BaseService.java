@@ -20,6 +20,11 @@ public interface BaseService<T extends BaseEntity> {
     List<T> selectAll();
 
     /**
+     * 保存信息
+     */
+    BaseResult save(T entity);
+
+    /**
      * 删除用户信息
      *
      * @param id 用户ID
@@ -53,7 +58,7 @@ public interface BaseService<T extends BaseEntity> {
      *
      * @param start  查询起始值
      * @param length 查询长度
-     * @param draw
+     * @param draw 分页所需下放的参数
      * @param entity 实体类
      * @return 分页数据
      */

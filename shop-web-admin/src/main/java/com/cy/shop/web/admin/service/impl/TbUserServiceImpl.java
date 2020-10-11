@@ -1,15 +1,13 @@
 package com.cy.shop.web.admin.service.impl;
 
-import com.cy.shop.commons.constant.ConstantUtils;
+
 import com.cy.shop.commons.dto.BaseResult;
-import com.cy.shop.commons.dto.PageInfo;
-import com.cy.shop.commons.utils.RegexpUtils;
+import com.cy.shop.commons.validator.BeanValidator;
 import com.cy.shop.domain.TbUser;
 import com.cy.shop.web.admin.abstracts.AbstractBaseServiceImpl;
 import com.cy.shop.web.admin.dao.TbUserDao;
 import com.cy.shop.web.admin.service.TbUserService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -23,79 +21,62 @@ import java.util.Date;
 @Service
 public class TbUserServiceImpl extends AbstractBaseServiceImpl<TbUser, TbUserDao> implements TbUserService {
 
-    @Autowired
-    private TbUserDao tbUserDao;
-
-    /**
-     * 用户登录
-     *
-     * @param email 邮箱
-     * @return 用户信息
-     */
-    @Override
-    public TbUser login(String email, String password) {
-        //先根据email查询用户
-        TbUser tbUserByEmail = tbUserDao.getByEmail(email);
-        if (tbUserByEmail != null) {
-            //明文加密
-            String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
-            //输入的密码与用户的密码校对,一致则返回该用户信息
-            if (md5Password.equals(tbUserByEmail.getPassword())) {
-                return tbUserByEmail;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 保存信息
-     *
-     * @param tbUser 需要保存的数据
-     * @return 用户是否成功的信息
-     */
     @Override
     public BaseResult save(TbUser tbUser) {
-        BaseResult baseResult = checkTbUser(tbUser);
+        String validator = BeanValidator.validator(tbUser);
+        // 验证不通过
+        if (validator != null) {
+            return BaseResult.fail(validator);
+        }
 
-        //通过验证
-        if(baseResult.getStatus()== ConstantUtils.STATUS_SUCCESS){
+        // 通过验证
+        else {
             tbUser.setUpdated(new Date());
 
-            //新增用户
-            if(tbUser.getId()==null){
-                //密码加密
+            // 新增用户
+            if (tbUser.getId() == null) {
+                // 密码需要加密处理
                 tbUser.setPassword(DigestUtils.md5DigestAsHex(tbUser.getPassword().getBytes()));
                 tbUser.setCreated(new Date());
-                tbUserDao.insert(tbUser);
+                dao.insert(tbUser);
             }
 
-            //编辑用户
+            // 编辑用户
             else {
-                tbUserDao.update(tbUser);
-            }
-        }
-        return baseResult;
-    }
+                // 编辑用户时如果没有输入密码则沿用原来的密码
+                if (StringUtils.isBlank(tbUser.getPassword())) {
+                    TbUser oldTbUser = getById(tbUser.getId());
+                    tbUser.setPassword(oldTbUser.getPassword());
+                } else {
+                    // 验证密码是否符合规范，密码长度介于 6 - 20 位之间
+                    if (StringUtils.length(tbUser.getPassword()) < 6 || StringUtils.length(tbUser.getPassword()) > 20) {
+                        return BaseResult.fail("密码长度必须介于 6 - 20 位之间");
+                    }
 
+                    // 设置密码加密
+                    tbUser.setPassword(DigestUtils.md5DigestAsHex(tbUser.getPassword().getBytes()));
+                }
+                update(tbUser);
+            }
+
+            return BaseResult.success("保存用户信息成功");
+        }
+    }
 
     @Override
-    public BaseResult checkTbUser(TbUser tbUser){
-        BaseResult baseResult = BaseResult.success();
+    public TbUser login(String email, String password) {
+        TbUser tbUser = dao.getByEmail(email);
+        if (tbUser != null) {
+            // 明文密码加密
+            String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
 
-        if(StringUtils.isBlank(tbUser.getEmail())){
-            baseResult = BaseResult.fail("邮箱不能为空,请重新输入!");
-        }else if(!RegexpUtils.checkEmail(tbUser.getEmail())){
-            baseResult = BaseResult.fail("邮箱格式有误,请重新输入!");
-        }else if(StringUtils.isBlank(tbUser.getPassword())){
-            baseResult = BaseResult.fail("密码不能为空,请重新输入!");
-        }else if(StringUtils.isBlank(tbUser.getUsername())){
-            baseResult = BaseResult.fail("用户名不能为空,请重新输入!");
-        }else if(StringUtils.isBlank(tbUser.getPhone())){
-            baseResult = BaseResult.fail("手机号不能为空,请重新输入!");
-        }else if(!RegexpUtils.checkPhone(tbUser.getPhone())){
-            baseResult = BaseResult.fail("手机号格式有误,请重新输入!");
+            // 判断加密后的密码和数据库中存放的密码是否匹配，匹配则表示允许登录
+            if (md5Password.equals(tbUser.getPassword())) {
+                return tbUser;
+            }
         }
 
-        return baseResult;
+        return null;
     }
 }
+

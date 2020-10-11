@@ -14,8 +14,8 @@
         <module>shop-commons</module>
         <module>shop-domain</module>
         <module>shop-web-admin</module>
-        <module>shop-web-api</module>
-        <module>shop-web-ui</module>
+<!--        <module>shop-web-api</module>-->
+<!--        <module>shop-web-ui</module>-->
     </modules>
 
 

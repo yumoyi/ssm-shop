@@ -1,7 +1,11 @@
 package com.cy.shop.domain;
 
-import com.cy.shop.commons.persistence.BaseEntity;
+import com.cy.shop.commons.persistence.BaseTreeEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 分类管理
@@ -9,50 +13,17 @@ import lombok.Data;
  * @since 2020-09-29 15:35
  */
 
-public class TbContentCategory extends BaseEntity {
-    private Long parentId;
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class TbContentCategory extends BaseTreeEntity {
+    @Length(min = 1, max = 20, message = "分类名称必须介于 1 - 20 位之间")
     private String name;
+
     private Integer status;
+
+    @NotNull(message = "排序不能为空")
     private Integer sortOrder;
+
     private Boolean isParent;
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getSortOrder() {
-        return sortOrder;
-    }
-
-    public void setSortOrder(Integer sortOrder) {
-        this.sortOrder = sortOrder;
-    }
-
-    public Boolean getParent() {
-        return isParent;
-    }
-
-    public void setParent(Boolean parent) {
-        isParent = parent;
-    }
+    private TbContentCategory parent;
 }

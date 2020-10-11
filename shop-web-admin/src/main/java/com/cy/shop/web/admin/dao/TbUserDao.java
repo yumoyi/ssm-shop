@@ -4,8 +4,6 @@ import com.cy.shop.commons.persistence.BaseDao;
 import com.cy.shop.domain.TbUser;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author cy

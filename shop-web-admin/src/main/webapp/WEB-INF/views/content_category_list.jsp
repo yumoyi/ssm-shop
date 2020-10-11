@@ -60,14 +60,20 @@
                                         <th>ID</th>
                                         <th>名称</th>
                                         <th>排序</th>
+                                        <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach items="${tbContentCategories}" var="contentCategory">
-                                        <tr id="${contentCategory.id}" pId="${contentCategory.parentId}">
+                                        <tr id="${contentCategory.id}" pId="${contentCategory.parent.id}">
                                             <td>${contentCategory.id}</td>
                                             <td>${contentCategory.name}</td>
                                             <td>${contentCategory.sortOrder}</td>
+                                            <td>
+                                                <a href="#" type="button" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> 编辑</a>&nbsp;&nbsp;&nbsp;
+                                                <button type="button" class="btn btn-sm btn-danger" ><i class="fa fa-trash-o"></i> 删除</button>&nbsp;&nbsp;&nbsp;
+                                                <a href="#" type="button" class="btn btn-sm btn-default"><i class="fa fa-plus"></i> 添加下级菜单</a>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>

@@ -14,7 +14,6 @@
     <packaging>pom</packaging>
 
     <name>shop-dependencies</name>
-    <description></description>
 
     <properties>
         <!-- 环境配置 -->
@@ -24,7 +23,11 @@
 
         <!-- 统一的依赖管理 -->
         <alibaba-druid.version>1.1.6</alibaba-druid.version>
+        <apache-httpclient.version>4.5.5</apache-httpclient.version>
+        <commons-email.version>1.5</commons-email.version>
         <commons-lang3.version>3.5</commons-lang3.version>
+        <commons-fileupload.version>1.3.2</commons-fileupload.version>
+        <hibernate-validator.version>5.3.4.Final</hibernate-validator.version>
         <jstl.version>1.2</jstl.version>
         <log4j.version>1.2.17</log4j.version>
         <servlet-api.version>3.1.0</servlet-api.version>
@@ -101,6 +104,16 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-email</artifactId>
+                <version>${commons-email.version}</version>
+            </dependency>
             <!-- Commons End -->
 
 
@@ -132,6 +145,12 @@
             </dependency>
             <!-- Database End -->
 
+            <!--validator-->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
             <!--Test Begin-->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -168,6 +187,24 @@
                 <version>${jackson.version}</version>
             </dependency>
             <!-- Json End -->
+
+            <!-- Apache Http Begin -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${apache-httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>fluent-hc</artifactId>
+                <version>${apache-httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpmime</artifactId>
+                <version>${apache-httpclient.version}</version>
+            </dependency>
+            <!-- Apache Http End -->
         </dependencies>
     </dependencyManagement>
 
